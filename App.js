@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { estiloTextos } from './misEstilos';
 import { useState, useEffect } from 'react';
 import { TextInput, Button } from 'react-native';
@@ -11,7 +11,6 @@ export default function App() {
 	const [foto, setFoto] = useState(null);
 	const [tipoCamera, setTipoCamera] = useState('back');
 	const [cameraRef, setCameraRef] = useState(null);
-	const [cameraPermissions, setCameraPermissions] = useCameraPermissions();
 
 	useEffect(()=>{
 		(async () => {
@@ -53,10 +52,13 @@ export default function App() {
 
   return (
 	  <View style={styles.container}>
-	  	<CameraView style={styles.camera} facing='front'/>
+		 <CameraView
+		style={styles.camera}
+		type={tipoCamera}
+		ref={ref => setCameraRef(ref)} />
 	  	<StatusBar style="auto" />
+	    <Image style={styles.photo} source={foto} />
 	  	<Button title='boton' color={styles.button.color} onPress={tomarFoto}/>
-
 	  </View>
   );
 }
@@ -65,30 +67,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center',
+	alignItems: 'center'
   },
-
-	buttons: {
-		display: 'flex',
-		flexDirection: 'row',
-		gap: 20,
-		padding: 10,
-	},
-
-	inputField: {
-		backgroundColor: 'hsl(0, 0%, 5%)',
-		borderColor: 'hsl(0, 0%, 30%)',
-		borderWidth: 1,
-		color: 'hsl(0, 0%, 70%)',
-	},
-
-	button: {
-		color: 'hsl(0, 0%, 10%)',
-	},
-	camera: {
-		flex: 1,
-		aspectRatio: 1
-	}
-	
+  camera: {
+    flex: 1,
+	aspectRatio: 1,
+	  width: 250,
+	  height: 250
+  },
+  photo: {
+    width: 250,
+    height: 250,
+    marginBottom: 10,
+  },
+  button: {
+    marginBottom: 10,
+	color: 'hsl(0, 0%, 10%)'
+  }
 });
